@@ -1,5 +1,5 @@
 package com.RestfulApi.TeacherInformationSystem.dto;
 
-public class ClassDto {
+public class SchoolClassDto {
 
 }

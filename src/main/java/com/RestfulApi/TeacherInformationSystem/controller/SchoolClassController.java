@@ -1,5 +1,5 @@
 package com.RestfulApi.TeacherInformationSystem.controller;
 
-public class ClassController {
+public class SchoolClassController {
 
 }
