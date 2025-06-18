@@ -22,7 +22,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Teacher updateTeacher(String id, Teacher teacher) {
-       Teacher existing = teacherRepository.findById(id)
+        Teacher existing = teacherRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
         existing.setName(teacher.getName());
         existing.setSurname(teacher.getSurname());
@@ -33,19 +33,17 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public void deleteTeacher(String id) {
-       teacherRepository.deleteById(id);
+        teacherRepository.deleteById(id);
     }
 
     @Override
     public Teacher getTeacherById(String id) {
-         return teacherRepository.findById(id)
+        return teacherRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
-
     }
 
     @Override
     public List<Teacher> getAllTeachers() {
         return teacherRepository.findAll();
     }
-
 }

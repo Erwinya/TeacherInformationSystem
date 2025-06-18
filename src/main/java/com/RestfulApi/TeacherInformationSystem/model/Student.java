@@ -28,7 +28,7 @@ public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "ID", nullable = false, updatable = false, length = 36)
+    @Column(name = "ID", nullable = false, updatable = false, length = 36, unique = true)
     private String id;
 
     @NotBlank

@@ -48,7 +48,7 @@ public class Teacher {
     @Column(name = "Email", unique = true, nullable = false, length = 100)
     private String email;
 
-    @Column(name = "PhoneNumber", length = 15)
+    @Column(name = "Phone Number", length = 15)
     @Pattern(regexp = "^[0-9\\-+]{7,15}$", message = "Phone Number invalid")
     private String phoneNumber;
 

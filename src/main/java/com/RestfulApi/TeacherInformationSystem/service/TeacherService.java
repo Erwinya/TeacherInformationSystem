@@ -9,5 +9,4 @@ public interface TeacherService {
     void deleteTeacher(String id);
     Teacher getTeacherById(String id);
     List<Teacher> getAllTeachers();
-    List<Teacher> getTeachersBySchoolClassId(String schoolClassId);
 }

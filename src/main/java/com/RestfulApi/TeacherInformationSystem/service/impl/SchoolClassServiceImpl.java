@@ -49,8 +49,8 @@ public class SchoolClassServiceImpl implements SchoolClassService {
     @Override
     public List<SchoolClass> getClassesByTeacherId(String teacherId) {
         List<SchoolClass> classes = schoolClassRepository.findByTeacherId(teacherId);
-        if (classes == null || classes.isEmpty()) {
-            throw new RuntimeException("No classes found for this teacher");
+        if (classes.isEmpty()) {
+            throw new RuntimeException("No classes found for the given teacher ID");
         }
         return classes;
     }
