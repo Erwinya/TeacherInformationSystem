@@ -1,15 +1,15 @@
 package com.RestfulApi.TeacherInformationSystem.mapper;
 
-import com.RestfulApi.TeacherInformationSystem.dto.TeacherDto;
+import com.RestfulApi.TeacherInformationSystem.dto.TeacherDTO;
 import com.RestfulApi.TeacherInformationSystem.model.Teacher;
 
 public class TeacherMapper {
 
-    public static TeacherDto toDto(Teacher teacher) {
+    public static TeacherDTO toDto(Teacher teacher) {
         if (teacher == null) {
             return null;
         }
-        TeacherDto dto = new TeacherDto();
+        TeacherDTO dto = new TeacherDTO();
         dto.setName(teacher.getName());
         dto.setSurname(teacher.getSurname());
         dto.setEmail(teacher.getEmail());
@@ -17,7 +17,7 @@ public class TeacherMapper {
         dto.setDepartment(teacher.getDepartment());
         return dto;
     }
-    public static Teacher toEntity(TeacherDto dto) {
+    public static Teacher toEntity(TeacherDTO dto) {
         if (dto == null) {
             return null;
         }

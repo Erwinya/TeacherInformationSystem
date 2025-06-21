@@ -1,22 +1,23 @@
 package com.RestfulApi.TeacherInformationSystem.mapper;
 
-import com.RestfulApi.TeacherInformationSystem.dto.ManagerDto;
+import com.RestfulApi.TeacherInformationSystem.dto.ManagerDTO;
 import com.RestfulApi.TeacherInformationSystem.model.Manager;
 
 public class ManagerMapper {
-    public static ManagerDto toDto(Manager manager) {
+    public static ManagerDTO toDto(Manager manager) {
         if (manager == null) {
             return null;
         }
-        ManagerDto managerDto = new ManagerDto();
-        managerDto.setName(manager.getName());
-        managerDto.setSurname(manager.getSurname());
-        managerDto.setEmail(manager.getEmail());
-        managerDto.setPhoneNumber(manager.getPhoneNumber());
-        managerDto.setResponsibility(manager.getResponsibility());
-        return managerDto;
+        return new ManagerDTO(
+        manager.getName(),
+        manager.getSurname(),
+        manager.getEmail(),
+        manager.getPhoneNumber(),
+        manager.getResponsibility());
+       
+        
     }
-    public static Manager totoEntity(ManagerDto managerDto) {
+    public static Manager toEntity(ManagerDTO managerDto) {
         if (managerDto == null) {
             return null;
         }

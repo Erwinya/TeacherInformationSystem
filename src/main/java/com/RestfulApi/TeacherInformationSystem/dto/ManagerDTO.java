@@ -1,11 +1,13 @@
 package com.RestfulApi.TeacherInformationSystem.dto;
 
-import java.util.UUID;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public class ManagerDto {
-    private UUID id;
+@AllArgsConstructor
+@NoArgsConstructor
+public class ManagerDTO {
     private String name;
     private String surname;
     private String email;

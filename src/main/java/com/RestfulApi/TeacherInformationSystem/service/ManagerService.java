@@ -1,13 +1,13 @@
 package com.RestfulApi.TeacherInformationSystem.service;
 
 import java.util.List;
-import com.RestfulApi.TeacherInformationSystem.model.Manager;
+import com.RestfulApi.TeacherInformationSystem.dto.ManagerDTO;
 
 public interface ManagerService {
-    Manager createManager(Manager manager);
-    Manager updateManager(String id, Manager manager);
-    void deleteManager(String id);
-    Manager getManagerById(String id);
-    List<Manager> getAllManagers();
+    String createManager(ManagerDTO managerDto);
+    String updateManager(String id, ManagerDTO managerDto);
+    String deleteManager(String id);
+    String getManagerById(String id);
+    List<String> getAllManagers();
 }
 

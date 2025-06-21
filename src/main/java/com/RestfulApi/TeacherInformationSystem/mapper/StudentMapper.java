@@ -3,7 +3,7 @@ package com.RestfulApi.TeacherInformationSystem.mapper;
 import com.RestfulApi.TeacherInformationSystem.model.Student;
 
 public class StudentMapper {
-    public static Student mapToStudent(com.RestfulApi.TeacherInformationSystem.dto.StudentDto studentDto) {
+    public static Student mapToStudent(com.RestfulApi.TeacherInformationSystem.dto.StudentDTO studentDto) {
         if (studentDto == null) {
             return null;
         }
@@ -16,11 +16,11 @@ public class StudentMapper {
         student.setEnrolledClasses(studentDto.getEnrolledClasses());
         return student;
     }
-    public static com.RestfulApi.TeacherInformationSystem.dto.StudentDto mapToStudentDto(Student student) {
+    public static com.RestfulApi.TeacherInformationSystem.dto.StudentDTO mapToStudentDto(Student student) {
         if (student == null) {
             return null;
         }
-        com.RestfulApi.TeacherInformationSystem.dto.StudentDto studentDto = new com.RestfulApi.TeacherInformationSystem.dto.StudentDto();
+        com.RestfulApi.TeacherInformationSystem.dto.StudentDTO studentDto = new com.RestfulApi.TeacherInformationSystem.dto.StudentDTO();
         studentDto.setStudentNumber(student.getStudentNumber());
         studentDto.setName(student.getName());
         studentDto.setSurname(student.getSurname());
