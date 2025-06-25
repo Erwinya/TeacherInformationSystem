@@ -1,17 +1,12 @@
 package com.RestfulApi.TeacherInformationSystem.controller;
 
 import com.RestfulApi.TeacherInformationSystem.dto.ManagerDTO;
-import com.RestfulApi.TeacherInformationSystem.mapper.ManagerMapper;
-import com.RestfulApi.TeacherInformationSystem.model.Manager;
 import com.RestfulApi.TeacherInformationSystem.response.CustomResponse;
 import com.RestfulApi.TeacherInformationSystem.service.ManagerService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
@@ -33,30 +28,50 @@ public class ManagerController {
     }
     
     @GetMapping
-    public ResponseEntity<ManagerDTO> getManagerById(@PathVariable String id) {
-        Manager manager = managerService.getManagerById(id);
-        return ResponseEntity.ok(ManagerMapper.toDto(manager));
+    public CustomResponse<ManagerDTO> getManagerById(@PathVariable String id) {
+        ManagerDTO managerDTO = managerService.getManagerById(id);
+        CustomResponse<ManagerDTO> response = new CustomResponse<>();
+        response.setData(managerDTO);
+        response.setStatusCode(200);
+        response.setStatusMessage("SUCCESS");
+        response.setTimestamp(Instant.now().toString());
+        return response;
     }
-    
+    /* 
     @GetMapping
-    public ResponseEntity<List<ManagerDTO>> getAllManagers() {
+    public CustomResponse<List<ManagerDTO>> getAllManagers() {
         List<ManagerDTO> managerDTOs = managerService.getAllManagers()
                 .stream()
                 .map(ManagerMapper::toDto)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(managerDTOs);
+        CustomResponse<List<ManagerDTO>> response = new CustomResponse<>();
+        response.setData(managerDTOs);
+        response.setStatusCode(200);
+        response.setStatusMessage("SUCCESS");
+        response.setTimestamp(Instant.now().toString());
+        return response;
     }
     
     @PutMapping
-    public ResponseEntity<ManagerDTO> updateManager(@PathVariable String id, @RequestBody ManagerDTO managerDTO) {
+    public CustomResponse<ManagerDTO> updateManager(@PathVariable String id, @RequestBody ManagerDTO managerDTO) {
         Manager manager = ManagerMapper.toEntity(managerDTO);
         Manager updatedManager = managerService.updateManager(id, manager);
-        return ResponseEntity.ok(ManagerMapper.toDto(updatedManager));
+        CustomResponse<ManagerDTO> response = new CustomResponse<>();
+        response.setData(ManagerMapper.toDto(updatedManager));
+        response.setStatusCode(200);
+        response.setStatusMessage("SUCCESS");
+        response.setTimestamp(Instant.now().toString());
+        return response;
     }
-    
+    */
     @DeleteMapping
-    public ResponseEntity<Void> deleteManager(@PathVariable String id) {
+    public CustomResponse<Void> deleteManager(@PathVariable String id) {
         managerService.deleteManager(id);
-        return ResponseEntity.noContent().build();
+        CustomResponse<Void> response = new CustomResponse<>();
+        response.setData(null);
+        response.setStatusCode(204);
+        response.setStatusMessage("SUCCESS");
+        response.setTimestamp(Instant.now().toString());
+        return response;
     }
 }

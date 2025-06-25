@@ -7,7 +7,7 @@ public interface ManagerService {
     String createManager(ManagerDTO managerDto);
     String updateManager(String id, ManagerDTO managerDto);
     String deleteManager(String id);
-    String getManagerById(String id);
-    List<String> getAllManagers();
+    ManagerDTO getManagerById(String id);
+    List<ManagerDTO> getAllManagers();
 }
 

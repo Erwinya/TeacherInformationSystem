@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import com.RestfulApi.TeacherInformationSystem.dto.ManagerDTO;
+import com.RestfulApi.TeacherInformationSystem.mapper.ManagerMapper;
 import com.RestfulApi.TeacherInformationSystem.model.Manager;
 import com.RestfulApi.TeacherInformationSystem.repository.ManagerRepository;
 import com.RestfulApi.TeacherInformationSystem.service.ManagerService;
@@ -17,10 +18,12 @@ public class ManagerServiceImpl implements ManagerService {
     
     @Override
     public String createManager(ManagerDTO managerDTO) {
-        Manager manager = new Manager();
-        if (managerDTO == null){
-            throw new IllegalArgumentException("ManagerDTO cannot be null");
-        } managerRepository.save(manager);
+        Manager manager = ManagerMapper.toEntity(managerDTO);
+        if (manager == null) {
+            throw new RuntimeException("Manager cannot be null");
+            
+        }
+        managerRepository.save(manager);
         return "Manager created successfully with ID: " + manager.getId();
     }
     
@@ -42,14 +45,14 @@ public class ManagerServiceImpl implements ManagerService {
         if (id.isBlank()) {
             throw new RuntimeException("Manager ID cannot be empty");
         }
-        Manager manager = managerRepository.findById(id)
+        managerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Manager not found"));
-        managerRepository.deleteById(manager);
+        managerRepository.deleteById(id);
+        return "Manager deleted successfully with ID: " + id;
     }
     
     @Override
-    public String getManagerById(String id) {
-        
+    public ManagerDTO getManagerById(String id) {
         if (id.isBlank()) {
             throw new RuntimeException("Manager ID cannot be empty");
         }
@@ -57,17 +60,17 @@ public class ManagerServiceImpl implements ManagerService {
         if(manager.isEmpty()) {
             throw new IllegalArgumentException("Manager ID cannot be blank");
         }
-        return "Manager found: " + manager.get().getName() + " " + manager.get().getSurname() + " " + manager.get().getEmail() + " " + manager.get().getPhoneNumber() + " " + manager.get().getResponsibility();
+        return ManagerMapper.toDto(manager.get());
     }
     
     @Override
-    public List<String> getAllManagers() {
+    public List<ManagerDTO> getAllManagers() {
         if (managerRepository.findAll().isEmpty()) {
             throw new RuntimeException("Manager list cannot be empty");
         }
         return managerRepository.findAll()
                 .stream()
-                .map(manager -> manager.getName() + " " + manager.getSurname() + " " + manager.getEmail() + " " + manager.getPhoneNumber() + " " + manager.getResponsibility())
+                .map(ManagerMapper::toDto)
                 .toList();
     }
 }
