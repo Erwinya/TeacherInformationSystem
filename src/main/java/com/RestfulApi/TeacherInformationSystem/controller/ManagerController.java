@@ -37,7 +37,7 @@ public class ManagerController {
         response.setTimestamp(Instant.now().toString());
         return response;
     }
-    /* 
+    
     @GetMapping
     public CustomResponse<List<ManagerDTO>> getAllManagers() {
         List<ManagerDTO> managerDTOs = managerService.getAllManagers()
@@ -63,7 +63,7 @@ public class ManagerController {
         response.setTimestamp(Instant.now().toString());
         return response;
     }
-    */
+    
     @DeleteMapping
     public CustomResponse<Void> deleteManager(@PathVariable String id) {
         managerService.deleteManager(id);
