@@ -1,12 +1,15 @@
 package com.RestfulApi.TeacherInformationSystem.controller;
 
 import com.RestfulApi.TeacherInformationSystem.dto.ManagerDTO;
+import com.RestfulApi.TeacherInformationSystem.mapper.ManagerMapper;
 import com.RestfulApi.TeacherInformationSystem.response.CustomResponse;
 import com.RestfulApi.TeacherInformationSystem.service.ManagerService;
 import lombok.AllArgsConstructor;
+import org.apache.catalina.Manager;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
