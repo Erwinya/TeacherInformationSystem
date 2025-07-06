@@ -24,13 +24,13 @@ public class ManagerController {
         String serviceResponse = managerService.createManager(managerDto);
         CustomResponse<String> response = new CustomResponse<>();
         response.setData(serviceResponse);
-        response.setStatusCode(200);
+        response.setStatusCode(201);
         response.setStatusMessage("SUCCESS");
         response.setTimestamp(Instant.now().toString());
         return response;
     }
-    
-    @GetMapping
+
+    @GetMapping("/{id}")
     public CustomResponse<ManagerDTO> getManagerById(@PathVariable String id) {
         ManagerDTO managerDTO = managerService.getManagerById(id);
         CustomResponse<ManagerDTO> response = new CustomResponse<>();
@@ -40,13 +40,10 @@ public class ManagerController {
         response.setTimestamp(Instant.now().toString());
         return response;
     }
-    
+
     @GetMapping
     public CustomResponse<List<ManagerDTO>> getAllManagers() {
-        List<ManagerDTO> managerDTOs = managerService.getAllManagers()
-                .stream()
-                .map(ManagerMapper::toDto)
-                .collect(Collectors.toList());
+        List<ManagerDTO> managerDTOs = managerService.getAllManagers();
         CustomResponse<List<ManagerDTO>> response = new CustomResponse<>();
         response.setData(managerDTOs);
         response.setStatusCode(200);
@@ -54,20 +51,20 @@ public class ManagerController {
         response.setTimestamp(Instant.now().toString());
         return response;
     }
-    
-    @PutMapping
+
+    @PutMapping("/{id}")
     public CustomResponse<ManagerDTO> updateManager(@PathVariable String id, @RequestBody ManagerDTO managerDTO) {
-        Manager manager = ManagerMapper.toEntity(managerDTO);
-        Manager updatedManager = managerService.updateManager(id, manager);
+        String updatedId = managerService.updateManager(id, managerDTO);
+        ManagerDTO updatedManager = managerService.getManagerById(updatedId);
         CustomResponse<ManagerDTO> response = new CustomResponse<>();
-        response.setData(ManagerMapper.toDto(updatedManager));
+        response.setData(updatedManager);
         response.setStatusCode(200);
         response.setStatusMessage("SUCCESS");
         response.setTimestamp(Instant.now().toString());
         return response;
     }
-    
-    @DeleteMapping
+
+    @DeleteMapping("/{id}")
     public CustomResponse<Void> deleteManager(@PathVariable String id) {
         managerService.deleteManager(id);
         CustomResponse<Void> response = new CustomResponse<>();
