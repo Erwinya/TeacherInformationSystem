@@ -1,11 +1,28 @@
 package com.RestfulApi.TeacherInformationSystem.util;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.RestfulApi.TeacherInformationSystem.response.CustomResponse;
 
-@SpringBootApplication
+// Utility class for building consistent API responses
 public class ApiResponseUtil {
-    public static void main(String[] args) {
-        SpringApplication.run(ApiResponseUtil.class, args);
+    private ApiResponseUtil() {}
+
+    // Example static method for success response
+    public static <T> CustomResponse<T> success(T data) {
+        CustomResponse<T> response = new CustomResponse<>();
+        response.setData(data);
+        response.setStatusCode(200);
+        response.setStatusMessage("SUCCESS");
+        response.setTimestamp(java.time.Instant.now().toString());
+        return response;
+    }
+
+    // Example static method for error response
+    public static <T> CustomResponse<T> error(String message, int statusCode) {
+        CustomResponse<T> response = new CustomResponse<>();
+        response.setData(null);
+        response.setStatusCode(statusCode);
+        response.setStatusMessage(message);
+        response.setTimestamp(java.time.Instant.now().toString());
+        return response;
     }
 }
