@@ -3,17 +3,17 @@ package com.RestfulApi.TeacherInformationSystem.service.impl;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import com.RestfulApi.TeacherInformationSystem.model.SchoolClass;
+import com.RestfulApi.TeacherInformationSystem.model.Teacher;
 import com.RestfulApi.TeacherInformationSystem.repository.SchoolClassRepository;
 import com.RestfulApi.TeacherInformationSystem.service.SchoolClassService;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class SchoolClassServiceImpl implements SchoolClassService {
 
     private final SchoolClassRepository schoolClassRepository;
-    
-    public SchoolClassServiceImpl(SchoolClassRepository schoolClassRepository) {
-        this.schoolClassRepository = schoolClassRepository;
-    }
+    private final com.RestfulApi.TeacherInformationSystem.repository.TeacherRepository teacherRepository;
     
     @Override
     public SchoolClass createClass(SchoolClass schoolClass) {
@@ -25,7 +25,7 @@ public class SchoolClassServiceImpl implements SchoolClassService {
         SchoolClass existing = schoolClassRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Class not found"));
         existing.setName(schoolClass.getName());
-        existing.setTeacherId(schoolClass.getTeacherId());
+        existing.setTeacher(schoolClass.getTeacher());
         existing.setStudents(schoolClass.getStudents());
         return schoolClassRepository.save(existing);
     }
@@ -48,10 +48,8 @@ public class SchoolClassServiceImpl implements SchoolClassService {
     
     @Override
     public List<SchoolClass> getClassesByTeacherId(String teacherId) {
-        List<SchoolClass> classes = schoolClassRepository.findByTeacherId(teacherId);
-        if (classes.isEmpty()) {
-            throw new RuntimeException("No classes found for the given teacher ID");
-        }
-        return classes;
+        Teacher teacher = teacherRepository.findById(teacherId)
+                .orElseThrow(() -> new RuntimeException("Teacher not found"));
+        return schoolClassRepository.findByTeacher(teacher);
     }
 }

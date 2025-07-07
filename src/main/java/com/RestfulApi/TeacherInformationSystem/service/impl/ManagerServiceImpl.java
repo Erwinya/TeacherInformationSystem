@@ -20,11 +20,10 @@ public class ManagerServiceImpl implements ManagerService {
     public String createManager(ManagerDTO managerDTO) {
         Manager manager = ManagerMapper.toEntity(managerDTO);
         if (manager == null) {
-            throw new RuntimeException("Manager cannot be null");
-            
+            throw new IllegalArgumentException("Manager cannot be null");
         }
         managerRepository.save(manager);
-        return "Manager created successfully with ID: " + manager.getId();
+        return manager.getId();
     }
     
     @Override
@@ -37,39 +36,33 @@ public class ManagerServiceImpl implements ManagerService {
         manager.setPhoneNumber(managerDTO.getPhoneNumber());
         manager.setResponsibility(managerDTO.getResponsibility());
         managerRepository.save(manager);
-        return "Manager updated successfully with ID: " + manager.getId();
+        return manager.getId();
     }
 
     @Override
     public String deleteManager(String id) {
-        if (id.isBlank()) {
-            throw new RuntimeException("Manager ID cannot be empty");
+        if (id == null || id.isBlank()) {
+            throw new IllegalArgumentException("Manager ID cannot be empty");
         }
         managerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Manager not found"));
         managerRepository.deleteById(id);
-        return "Manager deleted successfully with ID: " + id;
+        return id;
     }
     
     @Override
     public ManagerDTO getManagerById(String id) {
-        if (id.isBlank()) {
-            throw new RuntimeException("Manager ID cannot be empty");
+        if (id == null || id.isBlank()) {
+            throw new IllegalArgumentException("Manager ID cannot be empty");
         }
         Optional<Manager> manager = managerRepository.findById(id);
-        if(manager.isEmpty()) {
-            throw new IllegalArgumentException("Manager ID cannot be blank");
-        }
-        return ManagerMapper.toDto(manager.get());
+        return manager.map(ManagerMapper::toDto)
+                      .orElseThrow(() -> new RuntimeException("Manager not found"));
     }
-    
+
     @Override
     public List<ManagerDTO> getAllManagers() {
-        if (managerRepository.findAll().isEmpty()) {
-            throw new RuntimeException("Manager list cannot be empty");
-        }
-        return managerRepository.findAll()
-                .stream()
+        return managerRepository.findAll().stream()
                 .map(ManagerMapper::toDto)
                 .toList();
     }

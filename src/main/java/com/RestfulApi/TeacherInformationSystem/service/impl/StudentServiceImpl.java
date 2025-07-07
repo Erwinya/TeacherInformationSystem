@@ -5,15 +5,13 @@ import org.springframework.stereotype.Service;
 import com.RestfulApi.TeacherInformationSystem.model.Student;
 import com.RestfulApi.TeacherInformationSystem.repository.StudentRepository;
 import com.RestfulApi.TeacherInformationSystem.service.StudentService;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
-    
-    public StudentServiceImpl(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
-    }
     
     @Override
     public Student createStudent(Student student) {
@@ -24,11 +22,12 @@ public class StudentServiceImpl implements StudentService {
     public Student updateStudent(String id, Student student) {
         Student existing = studentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Student not found"));
-        existing.setStudentNumber(student.getStudentNumber());       
+        existing.setStudentNumber(student.getStudentNumber());
         existing.setName(student.getName());
         existing.setSurname(student.getSurname());
         existing.setEmail(student.getEmail());
         existing.setPhoneNumber(student.getPhoneNumber());
+        existing.setEnrolledClasses(student.getEnrolledClasses());
         return studentRepository.save(existing);
     }
     

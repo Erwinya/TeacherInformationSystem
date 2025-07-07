@@ -6,6 +6,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -34,8 +37,14 @@ public class SchoolClass {
     private String name;
 
     @ManyToOne
-    @Column(name = "TeacherId", nullable = false)
-    private String teacherId;
+    @JoinColumn(name = "TeacherId", nullable = false)
+    private Teacher teacher;
 
+    @ManyToMany
+    @JoinTable(
+        name = "class_students",
+        joinColumns = @JoinColumn(name = "class_id"),
+        inverseJoinColumns = @JoinColumn(name = "student_id")
+    )
     private List<Student> students;
 }

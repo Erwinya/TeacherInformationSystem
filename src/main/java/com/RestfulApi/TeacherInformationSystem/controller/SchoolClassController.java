@@ -1,13 +1,11 @@
 package com.RestfulApi.TeacherInformationSystem.controller;
 
 import com.RestfulApi.TeacherInformationSystem.dto.SchoolClassDTO;
-import com.RestfulApi.TeacherInformationSystem.mapper.SchoolClassMapper;
-import com.RestfulApi.TeacherInformationSystem.model.SchoolClass;
+import com.RestfulApi.TeacherInformationSystem.response.CustomResponse;
 import com.RestfulApi.TeacherInformationSystem.service.SchoolClassService;
-
+import com.RestfulApi.TeacherInformationSystem.mapper.SchoolClassMapper;
+import com.RestfulApi.TeacherInformationSystem.util.ApiResponseUtil;
 import lombok.AllArgsConstructor;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,45 +18,44 @@ public class SchoolClassController {
     private final SchoolClassService schoolClassService;
 
     @PostMapping
-    public ResponseEntity<SchoolClassDTO> createClass(@RequestBody SchoolClassDTO schoolClassDTO) {
-        SchoolClass schoolClass = SchoolClassMapper.toEntity(schoolClassDTO);
-        SchoolClass createdClass = schoolClassService.createClass(schoolClass);
-        return ResponseEntity.ok(SchoolClassMapper.toDto(createdClass));
+    public CustomResponse<SchoolClassDTO> createClass(@RequestBody SchoolClassDTO schoolClassDTO) {
+        var createdClass = schoolClassService.createClass(SchoolClassMapper.toEntity(schoolClassDTO));
+        return ApiResponseUtil.success(SchoolClassMapper.toDto(createdClass));
     }
-    
-    @GetMapping
-    public ResponseEntity<SchoolClassDTO> getClassById(@PathVariable String id) {
-        SchoolClass schoolClass = schoolClassService.getClassById(id);
-        return ResponseEntity.ok(SchoolClassMapper.toDto(schoolClass));
+
+    @GetMapping("/{id}")
+    public CustomResponse<SchoolClassDTO> getClassById(@PathVariable String id) {
+        var schoolClass = schoolClassService.getClassById(id);
+        return ApiResponseUtil.success(SchoolClassMapper.toDto(schoolClass));
     }
-    
+
     @GetMapping
-    public ResponseEntity<List<SchoolClassDTO>> getAllClasses() {
+    public CustomResponse<List<SchoolClassDTO>> getAllClasses() {
         List<SchoolClassDTO> classDTOs = schoolClassService.getAllClasses()
                 .stream()
                 .map(SchoolClassMapper::toDto)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(classDTOs);
+        return ApiResponseUtil.success(classDTOs);
     }
-    
-    @PutMapping
-    public ResponseEntity<SchoolClassDTO> updateClass(@PathVariable String id, @RequestBody SchoolClassDTO schoolClassDTO) {
-        SchoolClass schoolClass = SchoolClassMapper.toEntity(schoolClassDTO);
-        SchoolClass updatedClass = schoolClassService.updateClass(id, schoolClass);
-        return ResponseEntity.ok(SchoolClassMapper.toDto(updatedClass));
+
+    @PutMapping("/{id}")
+    public CustomResponse<SchoolClassDTO> updateClass(@PathVariable String id, @RequestBody SchoolClassDTO schoolClassDTO) {
+        var updatedClass = schoolClassService.updateClass(id, SchoolClassMapper.toEntity(schoolClassDTO));
+        return ApiResponseUtil.success(SchoolClassMapper.toDto(updatedClass));
     }
-    
-    @DeleteMapping
-    public ResponseEntity<Void> deleteClass(@PathVariable String id) {
+
+    @DeleteMapping("/{id}")
+    public CustomResponse<Void> deleteClass(@PathVariable String id) {
         schoolClassService.deleteClass(id);
-        return ResponseEntity.noContent().build();
+        return ApiResponseUtil.success(null);
     }
-    @GetMapping
-    public ResponseEntity<List<SchoolClassDTO>> getClassesByTeacherId(@PathVariable String teacherId) {
+
+    @GetMapping("/teacher/{teacherId}")
+    public CustomResponse<List<SchoolClassDTO>> getClassesByTeacherId(@PathVariable String teacherId) {
         List<SchoolClassDTO> classDTOs = schoolClassService.getClassesByTeacherId(teacherId)
                 .stream()
                 .map(SchoolClassMapper::toDto)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(classDTOs);
+        return ApiResponseUtil.success(classDTOs);
     }
 }

@@ -5,15 +5,15 @@ import org.springframework.stereotype.Service;
 import com.RestfulApi.TeacherInformationSystem.model.Teacher;
 import com.RestfulApi.TeacherInformationSystem.repository.TeacherRepository;
 import com.RestfulApi.TeacherInformationSystem.service.TeacherService;
+import com.RestfulApi.TeacherInformationSystem.repository.SchoolClassRepository;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherRepository teacherRepository;
-
-    public TeacherServiceImpl(TeacherRepository teacherRepository) {
-        this.teacherRepository = teacherRepository;
-    }
+    private final SchoolClassRepository schoolClassRepository;
 
     @Override
     public Teacher createTeacher(Teacher teacher) {
@@ -28,6 +28,7 @@ public class TeacherServiceImpl implements TeacherService {
         existing.setSurname(teacher.getSurname());
         existing.setEmail(teacher.getEmail());
         existing.setPhoneNumber(teacher.getPhoneNumber());
+        existing.setDepartment(teacher.getDepartment());
         return teacherRepository.save(existing);
     }
 
@@ -40,6 +41,12 @@ public class TeacherServiceImpl implements TeacherService {
     public Teacher getTeacherById(String id) {
         return teacherRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
+    }
+
+    public Teacher getTeacherWithClasses(String id) {
+        Teacher teacher = getTeacherById(id);
+        teacher.setClasses(schoolClassRepository.findByTeacher(teacher));
+        return teacher;
     }
 
     @Override

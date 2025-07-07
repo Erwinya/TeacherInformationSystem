@@ -1,13 +1,11 @@
 package com.RestfulApi.TeacherInformationSystem.controller;
 
 import com.RestfulApi.TeacherInformationSystem.dto.StudentDTO;
-import com.RestfulApi.TeacherInformationSystem.mapper.StudentMapper;
-import com.RestfulApi.TeacherInformationSystem.model.Student;
+import com.RestfulApi.TeacherInformationSystem.response.CustomResponse;
 import com.RestfulApi.TeacherInformationSystem.service.StudentService;
-
+import com.RestfulApi.TeacherInformationSystem.mapper.StudentMapper;
+import com.RestfulApi.TeacherInformationSystem.util.ApiResponseUtil;
 import lombok.AllArgsConstructor;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,37 +18,35 @@ public class StudentController {
     private final StudentService studentService;
 
     @PostMapping
-    public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO) {
-        Student student = StudentMapper.mapToStudent(studentDTO);
-        Student createdStudent = studentService.createStudent(student);
-        return ResponseEntity.ok(StudentMapper.mapToStudentDto(createdStudent));
+    public CustomResponse<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO) {
+        var createdStudent = studentService.createStudent(StudentMapper.mapToStudent(studentDTO));
+        return ApiResponseUtil.success(StudentMapper.mapToStudentDto(createdStudent));
     }
-    
-    @GetMapping
-    public ResponseEntity<StudentDTO> getStudentById(@PathVariable String id) {
-        Student student = studentService.getStudentById(id);
-        return ResponseEntity.ok(StudentMapper.mapToStudentDto(student));
+
+    @GetMapping("/{id}")
+    public CustomResponse<StudentDTO> getStudentById(@PathVariable String id) {
+        var student = studentService.getStudentById(id);
+        return ApiResponseUtil.success(StudentMapper.mapToStudentDto(student));
     }
-    
+
     @GetMapping
-    public ResponseEntity<List<StudentDTO>> getAllStudents() {
+    public CustomResponse<List<StudentDTO>> getAllStudents() {
         List<StudentDTO> studentDTOs = studentService.getAllStudents()
                 .stream()
                 .map(StudentMapper::mapToStudentDto)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(studentDTOs);
+        return ApiResponseUtil.success(studentDTOs);
     }
-    
-    @PutMapping
-    public ResponseEntity<StudentDTO> updateStudent(@PathVariable String id, @RequestBody StudentDTO studentDTO) {
-        Student student = StudentMapper.mapToStudent(studentDTO);
-        Student updatedStudent = studentService.updateStudent(id, student);
-        return ResponseEntity.ok(StudentMapper.mapToStudentDto(updatedStudent));
+
+    @PutMapping("/{id}")
+    public CustomResponse<StudentDTO> updateStudent(@PathVariable String id, @RequestBody StudentDTO studentDTO) {
+        var updatedStudent = studentService.updateStudent(id, StudentMapper.mapToStudent(studentDTO));
+        return ApiResponseUtil.success(StudentMapper.mapToStudentDto(updatedStudent));
     }
-    
-    @DeleteMapping
-    public ResponseEntity<Void> deleteStudent(@PathVariable String id) {
+
+    @DeleteMapping("/{id}")
+    public CustomResponse<Void> deleteStudent(@PathVariable String id) {
         studentService.deleteStudent(id);
-        return ResponseEntity.noContent().build();
+        return ApiResponseUtil.success(null);
     }
 }

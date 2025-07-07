@@ -15,5 +15,4 @@ public interface TeacherRepository extends JpaRepository<Teacher, String> {
     List<Teacher> findBySurnameContainingIgnoreCase(String surname);
     List<Teacher> findByNameContainingIgnoreCaseAndSurnameContainingIgnoreCase(String name, String surname);
     void deleteById(String id);
-    List<Teacher> findBySchoolClassId(String schoolClassId);
  }
