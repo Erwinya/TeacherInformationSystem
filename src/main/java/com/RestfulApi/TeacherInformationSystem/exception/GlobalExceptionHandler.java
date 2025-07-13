@@ -37,4 +37,9 @@ public class GlobalExceptionHandler {
     public CustomResponse<?> handleDuplicateEmail(DuplicateEmailException ex) {
         return ApiResponseUtil.error(ex.getMessage(), HttpStatus.CONFLICT.value());
     }
+
+    @ExceptionHandler(TeacherNotFoundException.class)
+    public CustomResponse<?> handleTeacherNotFound(TeacherNotFoundException ex) {
+        return ApiResponseUtil.error(ex.getMessage(), HttpStatus.NOT_FOUND.value());
+    }
 }
