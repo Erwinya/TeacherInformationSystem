@@ -9,6 +9,8 @@ import com.RestfulApi.TeacherInformationSystem.model.Manager;
 import com.RestfulApi.TeacherInformationSystem.repository.ManagerRepository;
 import com.RestfulApi.TeacherInformationSystem.service.ManagerService;
 import lombok.AllArgsConstructor;
+import com.RestfulApi.TeacherInformationSystem.exception.ManagerNotFoundException;
+import com.RestfulApi.TeacherInformationSystem.exception.DuplicateEmailException;
 
 @Service
 @AllArgsConstructor
@@ -18,10 +20,13 @@ public class ManagerServiceImpl implements ManagerService {
     
     @Override
     public String createManager(ManagerDTO managerDTO) {
-        Manager manager = ManagerMapper.toEntity(managerDTO);
-        if (manager == null) {
-            throw new IllegalArgumentException("Manager cannot be null");
+        if (managerDTO == null) {
+            throw new IllegalArgumentException("ManagerDTO null olamaz");
         }
+        if (managerRepository.existsByEmail(managerDTO.getEmail())) {
+            throw new DuplicateEmailException("Bu email ile zaten bir yönetici mevcut!");
+        }
+        Manager manager = ManagerMapper.toEntity(managerDTO);
         managerRepository.save(manager);
         return manager.getId();
     }
@@ -29,7 +34,7 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public String updateManager(String id, ManagerDTO managerDTO) {
         Manager manager = managerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Manager not found"));
+                .orElseThrow(() -> new ManagerNotFoundException("Manager bulunamadı: " + id));
         manager.setName(managerDTO.getName());
         manager.setSurname(managerDTO.getSurname());
         manager.setEmail(managerDTO.getEmail());
@@ -42,10 +47,10 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public String deleteManager(String id) {
         if (id == null || id.isBlank()) {
-            throw new IllegalArgumentException("Manager ID cannot be empty");
+            throw new IllegalArgumentException("Manager ID boş olamaz");
         }
         managerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Manager not found"));
+                .orElseThrow(() -> new ManagerNotFoundException("Manager bulunamadı: " + id));
         managerRepository.deleteById(id);
         return id;
     }
@@ -53,11 +58,11 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public ManagerDTO getManagerById(String id) {
         if (id == null || id.isBlank()) {
-            throw new IllegalArgumentException("Manager ID cannot be empty");
+            throw new IllegalArgumentException("Manager ID boş olamaz");
         }
         Optional<Manager> manager = managerRepository.findById(id);
         return manager.map(ManagerMapper::toDto)
-                      .orElseThrow(() -> new RuntimeException("Manager not found"));
+                      .orElseThrow(() -> new ManagerNotFoundException("Manager bulunamadı: " + id));
     }
 
     @Override

@@ -27,4 +27,14 @@ public class GlobalExceptionHandler {
     public CustomResponse<?> handleGenericException(Exception ex) {
         return ApiResponseUtil.error("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
+
+    @ExceptionHandler(ManagerNotFoundException.class)
+    public CustomResponse<?> handleManagerNotFound(ManagerNotFoundException ex) {
+        return ApiResponseUtil.error(ex.getMessage(), HttpStatus.NOT_FOUND.value());
+    }
+
+    @ExceptionHandler(DuplicateEmailException.class)
+    public CustomResponse<?> handleDuplicateEmail(DuplicateEmailException ex) {
+        return ApiResponseUtil.error(ex.getMessage(), HttpStatus.CONFLICT.value());
+    }
 }
