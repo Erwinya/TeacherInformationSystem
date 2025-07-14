@@ -42,4 +42,14 @@ public class GlobalExceptionHandler {
     public CustomResponse<?> handleTeacherNotFound(TeacherNotFoundException ex) {
         return ApiResponseUtil.error(ex.getMessage(), HttpStatus.NOT_FOUND.value());
     }
+
+    @ExceptionHandler(StudentNotFoundException.class)
+    public CustomResponse<?> handleStudentNotFound(StudentNotFoundException ex) {
+        return ApiResponseUtil.error(ex.getMessage(), HttpStatus.NOT_FOUND.value());
+    }
+
+    @ExceptionHandler(SchoolClassNotFoundException.class)
+    public CustomResponse<?> handleSchoolClassNotFound(SchoolClassNotFoundException ex) {
+        return ApiResponseUtil.error(ex.getMessage(), HttpStatus.NOT_FOUND.value());
+    }
 }

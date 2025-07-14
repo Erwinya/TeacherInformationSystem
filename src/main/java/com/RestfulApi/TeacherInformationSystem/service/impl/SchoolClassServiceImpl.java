@@ -7,6 +7,8 @@ import com.RestfulApi.TeacherInformationSystem.model.Teacher;
 import com.RestfulApi.TeacherInformationSystem.repository.SchoolClassRepository;
 import com.RestfulApi.TeacherInformationSystem.service.SchoolClassService;
 import lombok.AllArgsConstructor;
+import com.RestfulApi.TeacherInformationSystem.exception.SchoolClassNotFoundException;
+import com.RestfulApi.TeacherInformationSystem.exception.TeacherNotFoundException;
 
 @Service
 @AllArgsConstructor
@@ -23,7 +25,7 @@ public class SchoolClassServiceImpl implements SchoolClassService {
     @Override
     public SchoolClass updateClass(String id, SchoolClass schoolClass) {
         SchoolClass existing = schoolClassRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Class not found"));
+                .orElseThrow(() -> new SchoolClassNotFoundException("Class not found with id: " + id));
         existing.setName(schoolClass.getName());
         existing.setTeacher(schoolClass.getTeacher());
         existing.setStudents(schoolClass.getStudents());
@@ -32,13 +34,16 @@ public class SchoolClassServiceImpl implements SchoolClassService {
     
     @Override
     public void deleteClass(String id) {
+        if (!schoolClassRepository.existsById(id)) {
+            throw new SchoolClassNotFoundException("Class not found with id: " + id);
+        }
         schoolClassRepository.deleteById(id);
     }
     
     @Override
     public SchoolClass getClassById(String id) {
         return schoolClassRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Class not found"));
+                .orElseThrow(() -> new SchoolClassNotFoundException("Class not found with id: " + id));
     }
 
     @Override
@@ -49,7 +54,7 @@ public class SchoolClassServiceImpl implements SchoolClassService {
     @Override
     public List<SchoolClass> getClassesByTeacherId(String teacherId) {
         Teacher teacher = teacherRepository.findById(teacherId)
-                .orElseThrow(() -> new RuntimeException("Teacher not found"));
+                .orElseThrow(() -> new TeacherNotFoundException("Teacher not found with id: " + teacherId));
         return schoolClassRepository.findByTeacher(teacher);
     }
 }
