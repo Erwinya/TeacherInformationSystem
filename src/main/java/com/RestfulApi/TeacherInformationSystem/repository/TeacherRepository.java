@@ -7,12 +7,10 @@ import com.RestfulApi.TeacherInformationSystem.model.Teacher;
 
 public interface TeacherRepository extends JpaRepository<Teacher, String> {
 
-    Optional<Teacher> findById(String id);
     Optional<Teacher> findByEmail(String email);
     boolean existsByEmail(String email);
     List<Teacher> findByDepartment(String department);
     List<Teacher> findByNameContainingIgnoreCase(String name);
     List<Teacher> findBySurnameContainingIgnoreCase(String surname);
     List<Teacher> findByNameContainingIgnoreCaseAndSurnameContainingIgnoreCase(String name, String surname);
-    void deleteById(String id);
  }
